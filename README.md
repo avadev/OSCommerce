@@ -9,7 +9,10 @@ AvaTax reduces the audit risk to a company by providing a cloud-based
 sales tax service that makes it simple to do rate calculations, while managing
 exemption certificates, filing forms and remitting payments.
 
-The module supports two modes; i) Basic ii) Pro
+The module supports two modes; 
+
+1. Basic
+2. Pro
 
 The AvaTax Basic service provides limited use of the AvaTax sales tax codes, in
 particular P0000000 for Personal Taxable goods, a Shipping tax code and NT for
@@ -27,14 +30,15 @@ Access to a fully functional development account can be requested by contacting
 Avalara, Inc. 
 
 AvaTax Development service: https://admin-development.avalara.net
+
 AvaTax Production service: https://admin-avatax.avalara.net 
 
 Version 2.3.R of the module is compatible with osCommerce 2.3.3x 
 
 REQUIREMENTS
 ============
-a) The service uses the AvaTax REST api for processing transactions.
-b) The server needs to support cURL
+1. The service uses the AvaTax REST api for processing transactions.
+2. The server needs to support cURL
 
 
 INSTALLATION
@@ -206,6 +210,7 @@ Update the following two osCommerce files
 i) File: orders.php - NB - instance in yoursite/admin/orders.php
 
 Insert the following 9 lines of code after: 
+```
 $comments = tep_db_prepare_input($HTTP_POST_VARS['comments']);
 
   require_once DIR_WS_MODULES . 'avatax/erp.avatax.php';
@@ -217,16 +222,20 @@ $comments = tep_db_prepare_input($HTTP_POST_VARS['comments']);
   if ($status == $avatax_delivered) { 
     tep_avatax_commit_transaction($oID);
   }
+```
 
 Insert the following 2 lines of code after: 
+```
 tep_remove_order($oID, $HTTP_POST_VARS['restock']);
 
   require_once DIR_WS_MODULES . 'avatax/erp.avatax.php';
   tep_avatax_cancel_transaction($oID);
+```
 
 ii) File: order.php - NB - instance in yoursite/admin/includes/classes/order.php
 
 line 27 - add "customers_id,"
+```
 $order_query = tep_db_query("select customers_name, customers_id, .... "'");
 
 $this->customer array to include - 'id' => $order['customers_id'], 
@@ -235,6 +244,7 @@ $this->customer = array('name' => $order['customers_name'],
                         'id' => $order['customers_id'],
                         'company' => $order['customers_company'],
                         .....
+```
 
 Operations
 ----------
@@ -284,7 +294,9 @@ generated if the address fields are populated with invalid data by the user.
 The following address will generate an error:
 
 Street: Nowhere Street
+
 City: Nowhere City
+
 Zip: 99999
 
 AvaTax error: JurisdictionNotFoundError:
